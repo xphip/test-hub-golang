@@ -5,9 +5,9 @@ import (
 	"test-hub-golang/pkg/eventhub"
 )
 
-func Consume(consumer eventhub.Consumer) {
+func Consume(id int, consumer eventhub.Consumer) {
 	for event := range consumer {
-		fmt.Println(event)
+		fmt.Printf("Consumidor %d recebeu a mensagem: %s\n", id, event)
 	}
 }
 
@@ -16,7 +16,7 @@ func main() {
 
 	for i := 0; i < 2; i++ {
 		consumer := eventHub.Subscribe()
-		go Consume(consumer)
+		go Consume(i, consumer)
 	}
 
 	for i := 1; i <= 5; i++ {
