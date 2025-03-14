@@ -1,33 +1,31 @@
 package eventhub
 
-import (
-	"errors"
-)
+type Consumer = chan string
 
 type EventHub struct {
-	Table map[string]*Topic
+	Consumers []Consumer
 }
 
 func New() *EventHub {
 	return &EventHub{
-		Table: make(map[string]*Topic),
+		Consumers: make([]Consumer, 0),
 	}
 }
 
-func (eh *EventHub) Subscribe(topicChannel string) (*Topic, error) {
-	if topic, ok := eh.Table[topicChannel]; !ok {
-		return nil, errors.New("channel doesnt exist")
-	} else {
-		return topic, nil
+func (eh *EventHub) Subscribe() Consumer {
+	consumer := make(Consumer)
+	eh.Consumers = append(eh.Consumers, consumer)
+	return consumer
+}
+
+func (eh *EventHub) Publish(event string) {
+	for _, consumer := range eh.Consumers {
+		consumer <- event
 	}
 }
 
-func (eh *EventHub) Publish(topicChannel string, message string) error {
-	if topic, ok := eh.Table[topicChannel]; !ok {
-		return errors.New("chanel doesnt exist")
-	} else {
-		topic.Messages <- message
+func (eh *EventHub) Close() {
+	for _, consumer := range eh.Consumers {
+		close(consumer)
 	}
-
-	return nil
 }
