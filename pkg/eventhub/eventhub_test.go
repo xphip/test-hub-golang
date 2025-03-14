@@ -6,6 +6,13 @@ import (
 	"testing"
 )
 
+func TestNewEventHub(t *testing.T) {
+	var eventHub = eventhub.New()
+	if eventHub == nil {
+		t.Error("eventHub instance is nil")
+	}
+}
+
 func TestSubscribeAndPublish(t *testing.T) {
 	var (
 		wg                = sync.WaitGroup{}
