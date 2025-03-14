@@ -2,9 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"os/signal"
-	"syscall"
 	"test-hub-golang/pkg/eventhub"
 )
 
@@ -15,9 +12,6 @@ func Consume(consumer eventhub.Consumer) {
 }
 
 func main() {
-	wait := make(chan os.Signal, 1)
-	signal.Notify(wait, syscall.SIGINT, syscall.SIGTERM)
-
 	eventHub := eventhub.New()
 
 	for i := 0; i < 2; i++ {
@@ -31,7 +25,4 @@ func main() {
 	}
 
 	eventHub.Close()
-
-	<-wait
-	fmt.Println("EventHub finished")
 }
