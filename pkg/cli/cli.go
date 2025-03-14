@@ -6,27 +6,27 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"test-hub-golang/pkg/pubsub"
+	"test-hub-golang/pkg/eventhub"
 )
 
 type CLI struct {
-	Ctx    context.Context
-	PubSub *pubsub.PubSub
+	Ctx      context.Context
+	EventHub *eventhub.EventHub
 }
 
 func NewCli() *CLI {
-	return &CLI{PubSub: pubsub.New()}
+	return &CLI{EventHub: eventhub.New()}
 }
 
 func (cli *CLI) Run() error {
 	wait := make(chan os.Signal, 1)
 	signal.Notify(wait, syscall.SIGINT, syscall.SIGTERM)
 
-	fmt.Println("PubSub started")
+	fmt.Println("EventHub started")
 
 	// TODO: make listener service to handle goroutines
 
 	<-wait
-	fmt.Println("PubSub finished")
+	fmt.Println("EventHub finished")
 	return nil
 }

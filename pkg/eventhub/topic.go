@@ -1,4 +1,4 @@
-package pubsub
+package eventhub
 
 type Topic struct {
 	Messages  chan string
