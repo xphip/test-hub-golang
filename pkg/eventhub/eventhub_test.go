@@ -17,10 +17,10 @@ func TestSubscribeAndPublish(t *testing.T) {
 
 	wg.Add(1)
 
-	go func(g *sync.WaitGroup, id int, c eventhub.Consumer) {
+	go func(g *sync.WaitGroup, c eventhub.Consumer) {
 		defer g.Done()
 		eventTestReceived = <-c
-	}(&wg, 0, consumer)
+	}(&wg, consumer)
 
 	eventHub.Publish(eventTest)
 
